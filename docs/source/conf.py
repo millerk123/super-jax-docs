@@ -3,7 +3,6 @@
 # -- Project information
 
 project = 'SUPER-JAX'
-copyright = '2021, Graziella'
 author = 'K.G. Miller, A.S. Joglekar, and J.P. Palastro'
 
 release = '0.1'
@@ -17,6 +16,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
+    'sphinxemoji.sphinxemoji',
 ]
 
 intersphinx_mapping = {
