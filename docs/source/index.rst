@@ -13,7 +13,7 @@ how to :ref:`install<installation>` the project.
 Features
 --------
 
-|:white_check_mark:| Automatic differentiation
+✅ Automatic differentiation
 
 ✅ GPU-ready with JAX
 
