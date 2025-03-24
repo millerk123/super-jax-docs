@@ -8,6 +8,6 @@ pip install myproject
 
 ## Basic Setup
 ```python
-from myproject import something
+from super_jax import something
 something.run()
 ```
