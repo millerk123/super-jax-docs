@@ -25,6 +25,7 @@ Contents
 .. toctree::
 
    usage
+   input_file
    api
 
 References
