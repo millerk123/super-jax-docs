@@ -132,13 +132,13 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
 
       The **type** parameter must take on one of the below allowed values:
 
-      * *"standard"*\ : Stuff
-      * *"ideal flying focus"*\ : Stuff
-      * *"axi-echelon flying focus"*\ : Stuff
-      * *"axicon-echelon flying focus"*\ : Stuff
-      * *"sag"*\ : Stuff
-      * *"plasma lens"*\ : Stuff
-      * *"custom"*\ : Stuff
+      * *"standard"*\ : A Gaussian pulse in the paraxial approximation, initialized in the far field.
+      * *"ideal flying focus"*\ : Ideal representation of the flying focus.\ [2]_
+      * *"axi-echelon flying focus"*\ : Axiparabola--echelon (or "ultrafast") flying focus.\ [3]_
+      * *"axicon-echelon flying focus"*\ : Axicon--echelon flying focus.
+      * *"sag"*\ : A Gaussian pulse in the paraxial approximation that is initialized in the near field and then focused by an optic with a custom sag function.
+      * *"plasma lens"*\ : Hacked-together way to import a pulse profile and focus it with a plasma lens (hey, at least I'm honest).
+      * *"custom"*\ : Pulse initialization using a custom-defined function, only for use when doing machine-learned optimization.
 
       See the sections below for more information on the parameters required for each pulse type.
 
@@ -162,22 +162,95 @@ Available parameters: **lambda0**\ , **I0**\ *=None*\ , **ene**\ *=None*\ , **tc
       Temporal center of the pulse (s).  This value should normally be within the limits of **tmin** and **tmax** from the `grid`_ section.
 
    **tpulse** : float
-      S
+      Pulse duration (s).  The field profile is proportional to :math:`\exp(-\{[t-t_\mathrm{cent}]/t_\mathrm{pulse}\}^{t_\mathrm{pow}})`\ .  Therefore, when **tpow** is 2 then the full width at half maximum of the intensity is :math:`\mathrm{FWHM} = \sqrt{2\ln 2} t_\mathrm{pulse}`\ .
 
    **tpow** : float
-      Temporal center
+      Power for the temporal profile of the field, which is proportional to :math:`\exp(-\{[t-t_\mathrm{cent}]/t_\mathrm{pulse}\}^{t_\mathrm{pow}})`\ .
 
    **wf** : float
-      Temporal center
+      Spot size at focus (m).  The field profile is proportional to :math:`\exp(-[r/w_\mathrm{f}]^2)` at the focus.
 
    **zf** : float
-      Temporal center
+      The focal position (m) in :math:`z`\ .
 
    **phase** : float
-      Temporal center
+      Phase constant (degrees) added to the field profile.
 
+
+Ideal flying focus pulse
+************************
+
+The ideal flying focus pulse is selected by setting **type** to "ideal flying focus", and can be described mathematically by performing a Lorentz transformation on the fields of a multipole source.\ [2]_  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
+
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ *=2*
+
+   **vI** : float
+      The speed of the focus (in units of the speed of light).
+
+   **f0** : float
+      Nominal focal length (m) of the focusing optic.
+
+   **nr_lens** : int
+      Number of grid points in the lens plane.
+
+   **rmaxf_lens** : float
+      Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
+
+   **rpow** : float, optional
+      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp(-[r_\mathrm{lens}/w_0]^{r_\mathrm{pow}})`\ .  The value of **rpow** defaults to 2.
+
+
+Axiparabola--echelon flying focus pulse
+***************************************
+
+The axiparabola--echelon flying focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
+
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ *=2*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ *=None*
+
+   **vI** : float
+      The speed of the focus (in units of the speed of light).
+
+   **f0** : float
+      Nominal focal length (m) of the focusing optic.
+
+   **nr_lens** : int
+      Number of grid points in the lens plane.
+
+   **rmaxf_lens** : float
+      Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
+
+   **rpow** : float, optional
+      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp(-[r_\mathrm{lens}/w_0]^{r_\mathrm{pow}})`\ .  The value of **rpow** defaults to 2.
+
+   **echelon** : bool
+      Whether or not to apply the echelon.
+
+   **Rap** : float
+      Radius (m) of the axiparabola.
+
+   **Lap** : float
+      Length (m) of the focal region.
+
+   **lambdaD** : float
+      Wavelength (m) for which the echelon is designed.
+
+   **nlambfact** : int
+      Number of half wavelengths of **lambdaD** per echelon step.
+
+   **nr_sag** : float
+      Number of points in :math:`r` for calculating the sag function (recommended to be bewteen :math:`10^4`\ --\ :math:`10^6`\ ).
+
+   **Rmin** : float, optional
+      The inner radius of the optical assembly, inside which the beam is apodized (blocked).  If left unspecified, the full aperture is used.
+
+   .. note::
+      The **I0** (\ **ene**\ ) parameter for this pulse refers to the maximum intensity (energy) of the pulse at the start of the focal region.  If the **Rmin** parameter is used, this can drastically affect the intensity at the beginning of the focal region, so using **ene** in this case would be more reliable.
 
 
 .. rubric:: References
 
-.. [1] A\. Couairon, E. Brambilla, T. Corti, D. Majus, O. de J. Ramírez-Góngora, and M. Kolesik, `"Practitioner’s guide to laser pulse propagation models and simulation," <https://doi.org/10.1140/epjst/e2011-01503-3>`_ *Eur. Phys. J.: Spec. Top.* **199**\ (1), 5-76 (2011).
+.. [1] A\. Couairon, *et al*\ ., `"Practitioner’s guide to laser pulse propagation models and simulation," <https://doi.org/10.1140/epjst/e2011-01503-3>`_ *Eur. Phys. J.: Spec. Top.* **199**\ (1), 5-76 (2011).
+
+.. [2] D\. Ramsey, *et al*\ ., `"Exact solutions for the electromagnetic fields of a flying focus," <https://doi.org/10.1103/PhysRevA.107.013513>`_ *Phys. Rev. A* **107**\ (1), 013513 (2023).
+
+.. [3] M\. V. Ambat, *et al*\ ., `"Programmable-trajectory ultrafast flying focus pulses," <https://doi.org/10.1364/OE.499839>`_ *Opt. Express* **31**\ (19), 31354 (2023).

@@ -34,4 +34,4 @@ Contents
 
 .. [2] M\. Kolesik and J.V. Moloney, `"Nonlinear optical pulse propagation simulation: From Maxwell’s to unidirectional equations," <https://doi.org/10.1103/PhysRevE.70.036604>`_ *Phys. Rev. E* **70**\ (3), 036604 (2004).
 
-.. [3] A\. Couairon, E. Brambilla, T. Corti, D. Majus, O. de J. Ramírez-Góngora, and M. Kolesik, `"Practitioner’s guide to laser pulse propagation models and simulation," <https://doi.org/10.1140/epjst/e2011-01503-3>`_ *Eur. Phys. J.: Spec. Top.* **199**\ (1), 5-76 (2011).
+.. [3] A\. Couairon, *et al*\ ., `"Practitioner’s guide to laser pulse propagation models and simulation," <https://doi.org/10.1140/epjst/e2011-01503-3>`_ *Eur. Phys. J.: Spec. Top.* **199**\ (1), 5-76 (2011).
