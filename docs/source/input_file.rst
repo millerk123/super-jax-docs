@@ -120,15 +120,15 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
    **pulses** : section
       The pulses section consists of numbers (beginning at 0) written as strings, one for each pulse that is desired in the simulation.  Each laser pulse must have a **type** parameter.  For example, if you want two pulses, the pulse section could look like
 
-   .. code-block:: yaml
+      .. code-block:: yaml
 
-      pulses:
-         "0":
-            type: "standard"
-            ...
-         "1":
-            type: "ideal flying focus"
-            ...
+            pulses:
+               "0":
+                  type: "standard"
+                  ...
+               "1":
+                  type: "ideal flying focus"
+                  ...
 
       The **type** parameter must take on one of the below allowed values:
 
