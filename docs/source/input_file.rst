@@ -120,15 +120,15 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
    **pulses** : section
       The pulses section consists of numbers (beginning at 0) written as strings, one for each pulse that is desired in the simulation.  Each laser pulse must have a **type** parameter.  For example, if you want two pulses, the pulse section could look like
 
-      .. code-block:: yaml
+   .. code-block:: yaml
 
-         pulses:
-            "0":
-               type: "standard"
-               ...
-            "1":
-               type: "ideal flying focus"
-               ...
+      pulses:
+         "0":
+            type: "standard"
+            ...
+         "1":
+            type: "ideal flying focus"
+            ...
 
       The **type** parameter must take on one of the below allowed values:
 
@@ -147,13 +147,34 @@ Standard pulse
 
 The standard pulse is selected by setting **type** to "standard".  This type of pulse is initialized completely in the far field.  A Gaussian pulse first is initialized at focus, where the temporal profile can have a custom power **tpow** to make a super-Gaussain profile.  The pulse is then transformed to :math:`\omega`\ --\ :math:`k` space and propagated to the beginning of the simulation assuming vacuum propagation.  The available parameters for the standard pulse type are listed below.
 
-Available parameters: **lambda0**\ , **I0**\ , **tcent**\ , **tpulse**\ , **tpow**\ , **wf**\ , **zf**\ , **phase**
+Available parameters: **lambda0**\ , **I0**\ *=None*\ , **ene**\ *=None*\ , **tcent**\ , **tpulse**\ , **tpow**\ , **wf**\ , **zf**\ , **phase**
 
    **lambda0** : float
       The wavelength (m) of the pulse.
 
-   **I0** : float
+   **I0** : float, optional
+      The peak intensity (W/cm\ :sup:`2`\ ) of the pulse *at focus*\ .
 
+   **ene** : float, optional
+      If the **I0** parameter is left unspecified, then the **ene** parameter is used to set the pulse amplitude.  It specifies the energy (J) of the pulse.  Note that either **I0** or **ene** must be specified.
+
+   **tcent** : float
+      Temporal center of the pulse (s).  This value should normally be within the limits of **tmin** and **tmax** from the `grid`_ section.
+
+   **tpulse** : float
+      S
+
+   **tpow** : float
+      Temporal center
+
+   **wf** : float
+      Temporal center
+
+   **zf** : float
+      Temporal center
+
+   **phase** : float
+      Temporal center
 
 
 
