@@ -15,7 +15,7 @@ Input files for SUPER-JAX are written as yaml files.  Here we will go over the s
 ``mlflow`` (optional)
 ---------------------
 
-If this section is present, then the output will be saved into a folder called ``mlruns``, and the data will have to be accessed using something like the ``mlflow ui`` command.  If you wish to avoid using ``mlflow``, simply omit this section.
+If this section is present, then the output will be saved into a folder called ``mlruns``, and the data will have to be accessed using something like the ``mlflow ui`` command.  If you wish to avoid using MLflow, simply omit this section.
 
 .. note::
 
@@ -34,7 +34,7 @@ Available parameters: **experiment**\ , **run**
 
 The grid section determines the speed of the moving frame, as well as the number of points in :math:`t`\ , :math:`z`\ , and :math:`r`\ .
 
-Available parameters: **vf**\ *=None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **xmin**\ , **xmax**\ , **nx**\ , **max_steps**\ *=8192*\ , **ell**\ *=0*
+Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **xmin**\ , **xmax**\ , **nx**\ , **max_steps**\ =\ *8192*\ , **ell**\ =\ *0*
 
    **vf** : float, optional
       The speed of the moving frame (in units of the speed of light).  If this parameter is left blank (recommended), the moving frame will be set to move at the group velocity of the wavelength specified by **lambda0** in the given medium.  This is ideal for stability, and the calculated value of **vf** can later be retrieved from the output data.
@@ -71,7 +71,7 @@ Available parameters: **vf**\ *=None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , 
 
 The medium section specifies the gas that any radiation will propagate through.
 
-Available parameters: **atomdensity**\ *=None*\ , **atom**\
+Available parameters: **atomdensity**\ =\ *None*\ , **atom**\
 
    **atomdensity** : float, optional
       The density of atoms specified by the **atom** parameter.  If **atomdensity** is left unspecified, the density will be set to standard temperature and pressure for the given **atom**\ .
@@ -88,7 +88,7 @@ Available parameters: **atomdensity**\ *=None*\ , **atom**\
 
 The laser section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
-Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega0**\ , **vmap**\ *=True*\ , **pulses**
+Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega0**\ , **vmap**\ =\ *True*\ , **pulses**
 
    **bound_nonlinearity** : bool
       Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide.\ [1]_
@@ -147,7 +147,7 @@ Standard pulse
 
 The standard pulse is selected by setting **type** to "standard".  This type of pulse is initialized completely in the far field.  A Gaussian pulse first is initialized at focus, where the temporal profile can have a custom power **tpow** to make a super-Gaussain profile.  The pulse is then transformed to :math:`\omega`\ --\ :math:`k` space and propagated to the beginning of the simulation assuming vacuum propagation.  The available parameters for the standard pulse type are listed below.
 
-Available parameters: **lambda0**\ , **I0**\ *=None*\ , **ene**\ *=None*\ , **tcent**\ , **tpulse**\ , **tpow**\ , **wf**\ , **zf**\ , **phase**
+Available parameters: **lambda0**\ , **I0**\ =\ *None*\ , **ene**\ =\ *None*\ , **tcent**\ , **tpulse**\ , **tpow**\ , **wf**\ , **zf**\ , **phase**
 
    **lambda0** : float
       The wavelength (m) of the pulse.
@@ -182,7 +182,7 @@ Ideal flying-focus pulse
 
 The ideal flying-focus pulse is selected by setting **type** to "ideal flying focus", and can be described mathematically by performing a Lorentz transformation on the fields of a multipole source.\ [2]_  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ *=2*
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*
 
    **vI** : float
       The speed of the focus (in units of the speed of light).
@@ -205,7 +205,7 @@ Axiparabola--echelon flying-focus pulse
 
 The axiparabola--echelon flying-focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ *=2*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ *=None*
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*
 
    **vI** : float
       The speed of the focus (in units of the speed of light).
@@ -281,7 +281,7 @@ Plasma lens pulse
 
 The plasma lens pulse is not really intended for production use, but it is documented here anyway.  This type of pulse extends the basic functionality of the `sag pulse`_ with the options to (i) load in an initial pulse profile that uses real field quantities from OSIRIS and (2) to focus using a plasma lens instead of an ideal lens.  In addition to all the parameters available for a `sag pulse`_\ , the parameters below are also available.
 
-Available parameters: **file**\ *=None*\ , **shape1**\ *=None*\ , **shape2**\ *=None*\ , **file_index**\ *=None*\ , **plasma_lens**
+Available parameters: **file**\ =\ *None*\ , **shape1**\ =\ *None*\ , **shape2**\ =\ *None*\ , **file_index**\ =\ *None*\ , **plasma_lens**
 
    **file** : str, optional
       The name of a numpy ``.npz`` file that contains the real field data on a grid of :math:`r` and :math:`z`\ .
@@ -310,13 +310,16 @@ The custom pulse is for use only when doing machine-learned optimization problem
 
 The save section determines the data that is saved and plotted.
 
-Available parameters: **lineskip**\ , **fullskip**\ , **plot_steps**\ *=False*\ , **display**\ *=True*\ , **dpi**\ *=300*\ , **save_sol**\ *=True*\ , **envelope** *=False*\ , **disable_output** *=False*\ , **upload** *=False*
+Available parameters: **lineskip**\ , **fullskip**\ , **directory**\ , **plot_steps**\ =\ *False*\ , **display**\ =\ *True*\ , **dpi**\ =\ *300*\ , **save_sol**\ =\ *True*\ , **envelope**\ =\ *False*\ , **disable_output**\ =\ *False*\ , **upload**\ =\ *False*
 
    **lineskip** : int
       The number of :math:`z` points to skip when writing lineout quantities (see diagnostics for more information).
 
    **fullskip** : int
       The number of :math:`z` points to skip when writing full-grid quantities (see diagnostics for more information).  This value should normally be greater than **lineskip** to save on disk space, memory usage, and output time.
+
+   **directory** : str
+      The directory (will be created) to store output.  If the `mlflow`_ section is present, then this parameter is optional.  If **directory** is specified and the `mlflow`_ section is also present, then the artifacts will be copied to **directory** before being logged with MLflow.
 
    **plot_steps** : bool, optional
       Whether or not to plot the full-grid electric field for each step saved (both as a function of :math:`r` and :math:`t` as well as :math:`k` and :math:`\omega`\ ).  Defaults to False.

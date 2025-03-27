@@ -26,6 +26,7 @@ Contents
 
    usage
    input_file
+   sample-analysis-link.ipynb
    api
 
 .. rubric:: References
