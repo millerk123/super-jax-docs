@@ -162,13 +162,13 @@ Available parameters: **lambda0**\ , **I0**\ *=None*\ , **ene**\ *=None*\ , **tc
       Temporal center of the pulse (s).  This value should normally be within the limits of **tmin** and **tmax** from the `grid`_ section.
 
    **tpulse** : float
-      Pulse duration (s).  The field profile is proportional to :math:`\exp(-\{[t-t_\mathrm{cent}]/t_\mathrm{pulse}\}^{t_\mathrm{pow}})`\ .  Therefore, when **tpow** is 2 then the full width at half maximum of the intensity is :math:`\mathrm{FWHM} = \sqrt{2\ln 2} t_\mathrm{pulse}`\ .
+      Pulse duration (s).  The field profile is proportional to :math:`\exp\{-[(t-t_\mathrm{cent})/t_\mathrm{pulse}]^{t_\mathrm{pow}}\}`\ .  Therefore, when **tpow** is 2 then the full width at half maximum of the intensity is :math:`\mathrm{FWHM} = \sqrt{2\ln 2} t_\mathrm{pulse}`\ .
 
    **tpow** : float
-      Power for the temporal profile of the field, which is proportional to :math:`\exp(-\{[t-t_\mathrm{cent}]/t_\mathrm{pulse}\}^{t_\mathrm{pow}})`\ .
+      Power for the temporal profile of the field, which is proportional to :math:`\exp\{-[(t-t_\mathrm{cent})/t_\mathrm{pulse}]^{t_\mathrm{pow}}\}`\ .
 
    **wf** : float
-      Spot size at focus (m).  The field profile is proportional to :math:`\exp(-[r/w_\mathrm{f}]^2)` at the focus.
+      Spot size at focus (m).  The field profile is proportional to :math:`\exp[-(r/w_\mathrm{f})^2]` at the focus.
 
    **zf** : float
       The focal position (m) in :math:`z`\ .
@@ -177,10 +177,10 @@ Available parameters: **lambda0**\ , **I0**\ *=None*\ , **ene**\ *=None*\ , **tc
       Phase constant (degrees) added to the field profile.
 
 
-Ideal flying focus pulse
+Ideal flying-focus pulse
 ************************
 
-The ideal flying focus pulse is selected by setting **type** to "ideal flying focus", and can be described mathematically by performing a Lorentz transformation on the fields of a multipole source.\ [2]_  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
+The ideal flying-focus pulse is selected by setting **type** to "ideal flying focus", and can be described mathematically by performing a Lorentz transformation on the fields of a multipole source.\ [2]_  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
 Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ *=2*
 
@@ -197,13 +197,13 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
       Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
 
    **rpow** : float, optional
-      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp(-[r_\mathrm{lens}/w_0]^{r_\mathrm{pow}})`\ .  The value of **rpow** defaults to 2.
+      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp[-(r_\mathrm{lens}/w_0)^{r_\mathrm{pow}}]`\ .  The value of **rpow** defaults to 2.
 
 
-Axiparabola--echelon flying focus pulse
+Axiparabola--echelon flying-focus pulse
 ***************************************
 
-The axiparabola--echelon flying focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
+The axiparabola--echelon flying-focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
 Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ *=2*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ *=None*
 
@@ -220,7 +220,7 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
       Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
 
    **rpow** : float, optional
-      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp(-[r_\mathrm{lens}/w_0]^{r_\mathrm{pow}})`\ .  The value of **rpow** defaults to 2.
+      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp[-(r_\mathrm{lens}/w_0)^{r_\mathrm{pow}}]`\ .  The value of **rpow** defaults to 2.
 
    **echelon** : bool
       Whether or not to apply the echelon.
@@ -243,8 +243,103 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
    **Rmin** : float, optional
       The inner radius of the optical assembly, inside which the beam is apodized (blocked).  If left unspecified, the full aperture is used.
 
-   .. note::
-      The **I0** (\ **ene**\ ) parameter for this pulse refers to the maximum intensity (energy) of the pulse at the start of the focal region.  If the **Rmin** parameter is used, this can drastically affect the intensity at the beginning of the focal region, so using **ene** in this case would be more reliable.
+.. note::
+
+   The **I0** (or **ene**\ ) parameter for this pulse refers to the maximum intensity (or energy) of the pulse at the start of the focal region.  If the **Rmin** parameter is used, this can drastically affect the intensity at the beginning of the focal region, so using **ene** in this case would be more reliable.
+
+
+Axicon--echelon flying-focus pulse
+**********************************
+
+The axicon--echelon flying-focus pulse is selected by setting **type** to "axicon-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axicon\ [4]_ and an echelon.  The difference between the axiparabola and axicon is in the expression for the focal length:
+
+* Axiparabola: :math:`f(r) = f_0 + L_\mathrm{ap} (r/R_\mathrm{ap})^2`.
+* Axicon: :math:`f(r) = f_0 + L_\mathrm{ap} (r^2 - R_\mathrm{min}^2) / (R_\mathrm{ap}^2 - R_\mathrm{min}^2)`.
+
+All of the parameters for the axicon--echelon flying-focus pulse are the same as for the `axiparabola--echelon flying-focus pulse`_\ , except that the **Rmin** parameter is required.
+
+
+Sag pulse
+*********
+
+The sag pulse initializes a Gaussian pulse in the paraxial approximation at the lens plane, then uses the sag function corresponding to an ideal lens with focal length **f0** to focus the pulse into the far field.  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
+
+Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**
+
+   **f0** : float
+      Nominal focal length (m) of the focusing optic.
+
+   **nr_lens** : int
+      Number of grid points in the lens plane.
+
+   **rmaxf_lens** : float
+      Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
+
+
+Plasma lens pulse
+*****************
+
+The plasma lens pulse is not really intended for production use, but it is documented here anyway.  This type of pulse extends the basic functionality of the `sag pulse`_ with the options to (i) load in an initial pulse profile that uses real field quantities from OSIRIS and (2) to focus using a plasma lens instead of an ideal lens.  In addition to all the parameters available for a `sag pulse`_\ , the parameters below are also available.
+
+Available parameters: **file**\ *=None*\ , **shape1**\ *=None*\ , **shape2**\ *=None*\ , **file_index**\ *=None*\ , **plasma_lens**
+
+   **file** : str, optional
+      The name of a numpy ``.npz`` file that contains the real field data on a grid of :math:`r` and :math:`z`\ .
+
+   **shape1** : int, optional
+      The number of zero-valued time points to add to the left of the data in **file**\ .
+
+   **shape2** : int, optional
+      The number of zero-valued time points to add to the right of the data in **file**\ .
+
+   **file_index** : int, optional
+      The radial index along which to search for the maximum frequency of the field (\ :math:`\omega_0` below).  Defaults to 0.
+
+   **plasma_lens** : bool
+      Whether to focus by a plasma lens optic (True) or an ideal lens (False), as with the `sag pulse`_\ .  The difference between the two focusing optics is that an ideal lens applies a phase of :math:`\exp\{i \omega r_\mathrm{lens}^2 / [c (2f_0 - 2s)] \}`\ , where :math:`s` is the sag function.  A plasma lens applies a phase of :math:`\exp[i \omega r_\mathrm{lens}^2 / (2cf_0) - 2 i \omega_0^2 s / (c\omega) ]`\ , where :math:`\omega_0` is the central frequency of the pulse.
+
+
+Custom pulse
+************
+
+The custom pulse is for use only when doing machine-learned optimization problems.  It allows for the user to completely specify the function (often related to one of the other pulse initialization methods) to use for initializing the laser pulse.
+
+
+``save``
+---------
+
+The save section determines the data that is saved and plotted.
+
+Available parameters: **lineskip**\ , **fullskip**\ , **plot_steps**\ *=False*\ , **display**\ *=True*\ , **dpi**\ *=300*\ , **save_sol**\ *=True*\ , **envelope** *=False*\ , **disable_output** *=False*\ , **upload** *=False*
+
+   **lineskip** : int
+      The number of :math:`z` points to skip when writing lineout quantities (see diagnostics for more information).
+
+   **fullskip** : int
+      The number of :math:`z` points to skip when writing full-grid quantities (see diagnostics for more information).  This value should normally be greater than **lineskip** to save on disk space, memory usage, and output time.
+
+   **plot_steps** : bool, optional
+      Whether or not to plot the full-grid electric field for each step saved (both as a function of :math:`r` and :math:`t` as well as :math:`k` and :math:`\omega`\ ).  Defaults to False.
+
+   **display** : bool, optional
+      Whether to display (True) or close (False) any plots made after the simulation finishes.  Defaults to True.
+
+   **dpi** : int, optional
+      The dpi used for saving figures.  Defaults to 300.
+
+   **save_sol** : bool, optional
+      Whether or not to save the simulation output data, either as an MLflow artifact if the `mlflow`_ section is present, or as xarray data.  Defaults to True.
+
+   **envelope** : bool, optional
+      Whether to plot the envelope (True) or real values (False) of the electric field.  Defaults to False.
+
+   **disable_output** : bool, optional
+      Completely disable all pre- and post-processing routines, including plotting and saving the data.  Defaults to False.
+
+   **upload** : bool, optional
+      Upload the data to a remote MLflow server.  Defaults to False.
+
+
 
 
 .. rubric:: References
@@ -254,3 +349,5 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
 .. [2] D\. Ramsey, *et al*\ ., `"Exact solutions for the electromagnetic fields of a flying focus," <https://doi.org/10.1103/PhysRevA.107.013513>`_ *Phys. Rev. A* **107**\ (1), 013513 (2023).
 
 .. [3] M\. V. Ambat, *et al*\ ., `"Programmable-trajectory ultrafast flying focus pulses," <https://doi.org/10.1364/OE.499839>`_ *Opt. Express* **31**\ (19), 31354 (2023).
+
+.. [4] A\. T. Friberg, `"Stationary-phase analysis of generalized axicons," <https://doi.org/10.1364/JOSAA.13.000743>`_ *J. Opt. Soc. Am. A* **13**\ (4), 743 (1996).

@@ -4,7 +4,7 @@ Welcome to the SUPER-JAX documentation!
 **SUPER** (\ **S**\ imulation of the **U**\ nidirectional pulse **P**\ ropagation **E**\ quation at **R**\ ochester) is a software package built in Fortran for simulating the Unidirectional Pulse Propagation Equation (UPPE).\ [1]_\ :sup:`--`\ [3]_  This code was adapted to Python with JAX integration by Kyle G. Miller and Archis S. Joglekar from MATLAB code written by John P. Palastro.
 
 Check out the :doc:`usage` section for further information, including
-how to :ref:`install<installation>` the project.
+how to :ref:`install <installation>` the project.
 
 .. note::
 
