@@ -91,10 +91,10 @@ The laser section sets the physics to include for laser pulse propagation, spati
 Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega0**\ , **vmap**\ *=True*\ , **pulses**
 
    **bound_nonlinearity** : bool
-      Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide\ [1]_\ .
+      Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide.\ [1]_
 
    **ionization** : bool
-      Whether or not propagation includes ionization of the gas (just the first level).  This term often leads to defocusing of an intense laser pulse in an ionization front.  For more information, see Section 2.4.4 of the practitioner's guide\ [1]_\ .
+      Whether or not propagation includes ionization of the gas (just the first level).  This term often leads to defocusing of an intense laser pulse in an ionization front.  For more information, see Section 2.4.4 of the practitioner's guide.\ [1]_
 
    **filt_t_size** : float
       The fraction of the total :math:`t` grid over which to taper the response to zero (using a cosine function) at the left and right edges.  For example, a value of 0.05 (recommended) will leave the middle 90% of the temporal grid untouched, but taper 5% on the left and 5% on the right to zero.
@@ -118,7 +118,8 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
       Whether to use a `vmap <https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html>`_ (True) or a `lax loop <https://docs.jax.dev/en/latest/_autosummary/jax.lax.map.html>`_ (False) when computing the fresnel integral at the lens in the near field.  Using a vmap is typically much faster, but it can consume more memory than a lax loop.
 
    **pulses** : section
-      The pulses section consists of numbers (beginning at 0) written as strings, one for each pulse that is desired in the simulation.  For example, if you want to pulses, the pulse section would look like
+      The pulses section consists of numbers (beginning at 0) written as strings, one for each pulse that is desired in the simulation.  Each laser pulse must have a **type** parameter.  For example, if you want two pulses, the pulse section could look like
+
       .. code-block:: yaml
 
       pulses:
@@ -126,36 +127,36 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
             type: "standard"
             ...
          "1":
-            type: "sag"
+            type: "ideal flying focus"
             ...
 
-      See the below section on **pulses** for more information.
+      The **type** parameter must take on one of the below allowed values:
 
-``pulses``
-*****
+      * *"standard"*\ : Stuff
+      * *"ideal flying focus"*\ : Stuff
+      * *"axi-echelon flying focus"*\ : Stuff
+      * *"axicon-echelon flying focus"*\ : Stuff
+      * *"sag"*\ : Stuff
+      * *"plasma lens"*\ : Stuff
+      * *"custom"*\ : Stuff
 
-   Each laser pulse must have a **type** parameter, which must take on one of the below allowed values:
-   * *"standard"*\ : Stuff
-   * *"ideal flying focus"*\ : Stuff
-   * *"axi-echelon flying focus"* or *"axicon-echelon flying focus"*\ : Stuff
-   * *"sag"*\ : Stuff
-   * *"plasma lens"*\ : Stuff
-   * *"custom"*\ : Stuff
+      See the sections below for more information on the parameters required for each pulse type.
 
 Standard pulse
-#####
+*****
 
 The standard pulse is selected by setting **type** to "standard".  This type of pulse is initialized completely in the far field.  A Gaussian pulse first is initialized at focus, where the temporal profile can have a custom power **tpow** to make a super-Gaussain profile.  The pulse is then transformed to :math:`\omega`\ --\ :math:`k` space and propagated to the beginning of the simulation assuming vacuum propagation.  The available parameters for the standard pulse type are listed below.
 
-Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega0**\ , **vmap**\ *=True*\ , **pulses**
+Available parameters: **lambda0**\ , **I0**\ , **tcent**\ , **tpulse**\ , **tpow**\ , **wf**\ , **zf**\ , **phase**
 
-   **bound_nonlinearity** : bool
-      Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide\ [1]_\ .
+   **lambda0** : float
+      The wavelength (m) of the pulse.
+
+   **I0** : float
 
 
 
 
-References
------
+.. rubric:: References
 
 .. [1] A\. Couairon, E. Brambilla, T. Corti, D. Majus, O. de J. Ramírez-Góngora, and M. Kolesik, `"Practitioner’s guide to laser pulse propagation models and simulation," <https://doi.org/10.1140/epjst/e2011-01503-3>`_ *Eur. Phys. J.: Spec. Top.* **199**\ (1), 5-76 (2011).

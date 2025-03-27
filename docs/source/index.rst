@@ -28,8 +28,7 @@ Contents
    input_file
    api
 
-References
-----------
+.. rubric:: References
 
 .. [1] M\. Kolesik, J.V. Moloney, and M. Mlejnek, `"Unidirectional Optical Pulse Propagation Equation," <https://doi.org/10.1103/PhysRevLett.89.283902>`_ *Phys. Rev. Lett.* **89**\ (28), 283902 (2002).
 
