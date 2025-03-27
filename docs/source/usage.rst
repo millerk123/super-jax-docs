@@ -33,7 +33,7 @@ This will create a conda environment named either ``super_jax`` or ``super_jax_1
 .. _usage:
 
 Basic usage
-------------
+-----------
 
 The most standard way to run SUPER-JAX is to perform a single simulation based on an input file.  This is done by executing
 

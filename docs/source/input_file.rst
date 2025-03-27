@@ -1,5 +1,5 @@
 Input file structure
-=====
+====================
 
 Input files for SUPER-JAX are written as yaml files.  Here we will go over the sections of the input file and the available parameters in each section.  The available sections of the input file are listed below:
 
@@ -13,7 +13,7 @@ Input files for SUPER-JAX are written as yaml files.  Here we will go over the s
 .. _mlflow:
 
 ``mlflow`` (optional)
------
+---------------------
 
 If this section is present, then the output will be saved into a folder called ``mlruns``, and the data will have to be accessed using something like the ``mlflow ui`` command.  If you wish to avoid using ``mlflow``, simply omit this section.
 
@@ -30,7 +30,7 @@ Available parameters: **experiment**\ , **run**
       Name of the run for this simulation.
 
 ``grid``
------
+--------
 
 The grid section determines the speed of the moving frame, as well as the number of points in :math:`t`\ , :math:`z`\ , and :math:`r`\ .
 
@@ -67,7 +67,7 @@ Available parameters: **vf**\ *=None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , 
       The azimuthal index :math:`\ell` of the simulation, which can take on values of either 0 or 1.  If set to 0, the simulation corresponds to a cylindrically symmetric pulse.  If set to 1, a laser pulse initialized like a Laguerre--Gaussian mode with :math:`\ell = 1` will propagate properly.  Setting **ell** to 1, however, is an experimental mode, and most types of laser pulses will not work well.
 
 ``medium``
------
+----------
 
 The medium section specifies the gas that any radiation will propagate through.
 
@@ -84,7 +84,7 @@ Available parameters: **atomdensity**\ *=None*\ , **atom**\
    The ``vg0`` parameter that is stored into the ``medium`` section of the dictionary in post-processing is the group velocity of the frequency specified by ``grid.lambda0``, which will be the frame velocity if ``grid.vf`` is left unspecified.
 
 ``laser``
------
+---------
 
 The laser section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
@@ -122,13 +122,13 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
 
       .. code-block:: yaml
 
-      pulses:
-         "0":
-            type: "standard"
-            ...
-         "1":
-            type: "ideal flying focus"
-            ...
+         pulses:
+            "0":
+               type: "standard"
+               ...
+            "1":
+               type: "ideal flying focus"
+               ...
 
       The **type** parameter must take on one of the below allowed values:
 
@@ -143,7 +143,7 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
       See the sections below for more information on the parameters required for each pulse type.
 
 Standard pulse
-*****
+**************
 
 The standard pulse is selected by setting **type** to "standard".  This type of pulse is initialized completely in the far field.  A Gaussian pulse first is initialized at focus, where the temporal profile can have a custom power **tpow** to make a super-Gaussain profile.  The pulse is then transformed to :math:`\omega`\ --\ :math:`k` space and propagated to the beginning of the simulation assuming vacuum propagation.  The available parameters for the standard pulse type are listed below.
 
