@@ -3,8 +3,11 @@ Input file structure
 
 Input files for SUPER-JAX are written as yaml files.  Here we will go over the sections of the input file and the available parameters in each section.  The available sections of the input file are listed below:
 
-* `mlflow`_
+* `mlflow`_ (optional)
 * `grid`_
+* `medium`_
+* `laser`_
+* `save`_
 
 .. note::
 
