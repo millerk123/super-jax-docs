@@ -208,7 +208,7 @@ Axiparabola--echelon flying-focus pulse
 
 The axiparabola--echelon flying-focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*, **Rmin_pow**\ =\ *rpow*
 
    **vI** : float
       The speed of the focus (in units of the speed of light).
@@ -245,6 +245,9 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
 
    **Rmin** : float, optional
       The inner radius of the optical assembly, inside which the beam is apodized (blocked).  If left unspecified, the full aperture is used.
+
+   **Rmin_pow** : float, optional
+      The power for the radial profile of the inner cutoff.  Defaults to **rpow**, but having this as a separate parameter allows for a sharp cutoff in the center and a more gradual one (e.g., Gaussian) on the outer edge.
 
 .. note::
 
