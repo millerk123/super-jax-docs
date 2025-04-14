@@ -74,13 +74,16 @@ Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ 
 
 The medium section specifies the gas that any radiation will propagate through.
 
-Available parameters: **atomdensity**\ =\ *None*\ , **atom**\
+Available parameters: **atomdensity**\ =\ *None*\ , **atom**\ , **nu_ei**\ =\ *1.0e13*
 
    **atomdensity** : float, optional
       The density of atoms specified by the **atom** parameter.  If **atomdensity** is left unspecified, the density will be set to standard temperature and pressure for the given **atom**\ .
 
    **atom** : str
       The atom to use for the medium.  Currently accepted values are *"hydrogen"*\ , *"helium"*\ , and *"argon"*\ .
+
+   **nu_ei** : float, optional
+      The electron--ion collision frequency (s\ :math:`^{-1}`\ ).  The value of **nu_ei** defaults to 1.0e13.
 
 .. note::
 
@@ -91,7 +94,7 @@ Available parameters: **atomdensity**\ =\ *None*\ , **atom**\
 
 The laser section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
-Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega0**\ , **vmap**\ =\ *True*\ , **pulses**
+Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega_grid**\ , **vmap**\ =\ *True*\ , **pulses**
 
    **bound_nonlinearity** : bool
       Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide.\ [1]_
@@ -114,8 +117,8 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
    **filt_angle** : float
       Waves with angle larger than **filt_angle** (in degrees) from the :math:`z`\ -axis are zeroed out during propagation.  The angle is determined in :math:`k`\ -space.
 
-   **filt_omega0** : float
-      Frequencies below :math:`\omega_0`\ are zeroed out, where :math:`\omega_0` is determined by the value of **lambda0** in the `grid`_ section.
+   **filt_omega_grid** : float
+      Frequencies below :math:`\omega_\mathrm{grid} *`\ **filt_omega_grid** are zeroed out, where :math:`\omega_\mathrm{grid} = 2\pi / T` and :math:`T` is the full time interval of the :math:`t` grid.  I.e., :math:`\omega_\mathrm{grid}` is the lowest frequency that can fit on the grid, and **filt_omega_grid** can be set to something like 2 in order to filter out anything below twice that frequency.
 
    **vmap** : bool, default: True
       Whether to use a `vmap <https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html>`_ (True) or a `lax loop <https://docs.jax.dev/en/latest/_autosummary/jax.lax.map.html>`_ (False) when computing the fresnel integral at the lens in the near field.  Using a vmap is typically much faster, but it can consume more memory than a lax loop.
