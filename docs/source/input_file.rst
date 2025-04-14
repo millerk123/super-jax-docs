@@ -185,7 +185,7 @@ Ideal flying-focus pulse
 
 The ideal flying-focus pulse is selected by setting **type** to "ideal flying focus", and can be described mathematically by performing a Lorentz transformation on the fields of a multipole source.\ [2]_  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*
 
    **vI** : float
       The speed of the focus (in units of the speed of light).
@@ -204,6 +204,9 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
 
    **rpow_2** : float, optional
       A second power to also multiply in to the field at the lens, similar to what is done for **rpow**\ .  The value of **rpow_2** defaults to *None* and has no effect.  This parameter could be useful, for example, to simulate a Gaussian pulse profile incident on a lens with a hard radial cutoff.  In that case, the parameters **rpow** = 2 and **rpow_2** = 40 could be used.
+
+   **w0_2** : float, optional
+      The spot size in the exponential applied with the **rpow_2** parameter.  Must be specified if **rpow_2** is specified.
 
 
 Axiparabola--echelon flying-focus pulse
@@ -211,7 +214,7 @@ Axiparabola--echelon flying-focus pulse
 
 The axiparabola--echelon flying-focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*, **Rmin_pow**\ =\ *rpow*
+Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*, **Rmin_pow**\ =\ *rpow*
 
    **vI** : float
       The speed of the focus (in units of the speed of light).
@@ -230,6 +233,9 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
 
    **rpow_2** : float, optional
       A second power to also multiply in to the field at the lens, similar to what is done for **rpow**\ .  The value of **rpow_2** defaults to *None* and has no effect.  This parameter could be useful, for example, to simulate a Gaussian pulse profile incident on a lens with a hard radial cutoff.  In that case, the parameters **rpow** = 2 and **rpow_2** = 40 could be used.
+
+   **w0_2** : float, optional
+      The spot size in the exponential applied with the **rpow_2** parameter.  Must be specified if **rpow_2** is specified.
 
    **echelon** : bool
       Whether or not to apply the echelon.
@@ -276,7 +282,7 @@ Sag pulse
 
 The sag pulse initializes a Gaussian pulse in the paraxial approximation at the lens plane, then uses the sag function corresponding to an ideal lens with focal length **f0** to focus the pulse into the far field.  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*
+Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*
 
    **f0** : float
       Nominal focal length (m) of the focusing optic.
@@ -292,6 +298,9 @@ Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*,
 
    **rpow_2** : float, optional
       A second power to also multiply in to the field at the lens, similar to what is done for **rpow**\ .  The value of **rpow_2** defaults to *None* and has no effect.  This parameter could be useful, for example, to simulate a Gaussian pulse profile incident on a lens with a hard radial cutoff.  In that case, the parameters **rpow** = 2 and **rpow_2** = 40 could be used.
+
+   **w0_2** : float, optional
+      The spot size in the exponential applied with the **rpow_2** parameter.  Must be specified if **rpow_2** is specified.
 
 
 Plasma lens pulse
