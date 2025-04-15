@@ -37,7 +37,7 @@ Available parameters: **experiment**\ , **run**
 
 The grid section determines the speed of the moving frame, as well as the number of points in :math:`t`\ , :math:`z`\ , and :math:`r`\ .
 
-Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **xmin**\ , **xmax**\ , **nx**\ , **max_steps**\ =\ *8192*\ , **ell**\ =\ *0*
+Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **xmin**\ , **xmax**\ , **nx**\ , **ell**\ =\ *0*
 
    **vf** : float, optional
       The speed of the moving frame (in units of the speed of light).  If this parameter is left blank (recommended), the moving frame will be set to move at the group velocity of the wavelength specified by **lambda0** in the given medium.  This is ideal for stability, and the calculated value of **vf** can later be retrieved from the output data.
@@ -62,9 +62,6 @@ Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ 
 
    **nx** : ints [nz, nr]
       The number of points used in :math:`z` and :math:`r`\ , respectively.
-
-   **max_steps** : int, default: 8192
-      The Diffrax ``diffeqsolve`` function requires the **max_steps** parameter, which is the maximum number of steps to take before quitting the computation unconditionally.  If **nx[0]**, i.e., the **nz** parameter, is set to be larger than 8192, then **max_steps** should also be increased accordingly.
 
    **ell** : int, default: 0
       The azimuthal index :math:`\ell` of the simulation, which can take on values of either 0 or 1.  If set to 0, the simulation corresponds to a cylindrically symmetric pulse.  If set to 1, a laser pulse initialized like a Laguerre--Gaussian mode with :math:`\ell = 1` will propagate properly.  Setting **ell** to 1, however, is an experimental mode, and most types of laser pulses will not work well.
