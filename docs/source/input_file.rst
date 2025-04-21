@@ -91,7 +91,7 @@ Available parameters: **atomdensity**\ =\ *None*\ , **atom**\ , **nu_ei**\ =\ *1
 
 The laser section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
-Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **filt_omega_grid**\ , **vmap**\ =\ *True*\ , **pulses**
+Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **delta_filt_angle**\ =\ *0*\ , **filt_omega_grid**\ , **vmap**\ =\ *True*\ , **pulses**
 
    **bound_nonlinearity** : bool
       Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide.\ [1]_
@@ -113,6 +113,9 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
 
    **filt_angle** : float
       Waves with angle larger than **filt_angle** (in degrees) from the :math:`z`\ -axis are zeroed out during propagation.  The angle is determined in :math:`k`\ -space.
+
+   **delta_filt_angle** : float
+      This implements a smooth filter in angle from **filt_angle** degrees to **filt_angle** minus **delta_filt_angle** degrees.  Defaults to 0.
 
    **filt_omega_grid** : float
       Frequencies below :math:`\omega_\mathrm{grid} *`\ **filt_omega_grid** are zeroed out, where :math:`\omega_\mathrm{grid} = 2\pi / T` and :math:`T` is the full time interval of the :math:`t` grid.  I.e., :math:`\omega_\mathrm{grid}` is the lowest frequency that can fit on the grid, and **filt_omega_grid** can be set to something like 2 in order to filter out anything below twice that frequency.
