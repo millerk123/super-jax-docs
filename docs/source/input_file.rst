@@ -115,10 +115,10 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_
       The fraction of the total :math:`r` grid over which to taper the response to zero (using a cosine function) at the top edge.  For example, a value of 0.1 (recommended) will leave the central 90% of the radial grid untouched, but taper 10% on the top to zero.  Defaults to 0.1.
 
    **filt_omega_high_min** : float, optional
-      The multiple of the Nyquist frequency (:math:`\omega_\mathrm{Ny} = \frac{\pi\}{\Delta t}`\ ) at which to begin filtering out high-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_high_min** to **filt_omega_high_max**\ .  Defaults to 0.9.
+      The multiple of the Nyquist frequency, :math:`\omega_\mathrm{Ny} = \pi / \Delta t`\ , at which to begin filtering out high-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_high_min** to **filt_omega_high_max**\ .  Defaults to 0.9.
 
    **filt_omega_high_max** : float, optional
-      The multiple of the Nyquist frequency (:math:`\omega_\mathrm{Ny} = \frac{\pi\}{\Delta t}`\ ) above which to exclude high-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_high_min** to **filt_omega_high_max**\ .  Defaults to 1.0.
+      The multiple of the Nyquist frequency, :math:`\omega_\mathrm{Ny} = \pi / \Delta t`\ , above which to exclude high-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_high_min** to **filt_omega_high_max**\ .  Defaults to 1.0.
 
    **filt_k_high_min** : float, optional
       The multiple of the Nyquist wavenumber at which to begin filtering out high-wavenumber content.  A smooth :math:`\cos^2` filter is applied from **filt_k_high_min** to **filt_k_high_max**\ .  Defaults to 0.9.
@@ -127,16 +127,16 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_
       The multiple of the Nyquist wavenumber above which to exclude high-wavenumber content.  A smooth :math:`\cos^2` filter is applied from **filt_k_high_min** to **filt_k_high_max**\ .  Defaults to 1.0.
 
    **filt_angle_min** : float, optional
-      The angle (degrees) from the :math:`z`\ -axis at which to begin filtering out spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to :math:`\tan^{-1}[(z_\mathrm{max} - z_\mathrm{min}) / r_\mathrm{max}]`, or the angle at which light originating from the axis at the first :math:`z` location will hit the radial boundary at the last :math:`z` location.
+      The angle (degrees) from the :math:`z`\ -axis at which to begin filtering out spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to :math:`\theta_\mathrm{max} = \tan^{-1}[(z_\mathrm{max} - z_\mathrm{min}) / r_\mathrm{max}]`, or the angle at which light originating from the axis at the first :math:`z` location will hit the radial boundary at the last :math:`z` location.
 
    **filt_angle_max** : float, optional
       The angle (degrees) from the :math:`z`\ -axis above which to exclude spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to **filt_angle_min** + 10.
 
    **filt_omega_grid_min** : float, optional
-      The multiple of the lowest frequency (:math:`\omega_\mathrm{grid} = \frac{2\pi\}{t_\mathrm{max} - t_\mathrm{min}}`\ ) below which to exclude low-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_grid_min** to **filt_omega_grid_max**\ .  Defaults to 1.0.
+      The multiple of the lowest frequency, :math:`\omega_\mathrm{grid} = 2\pi/(t_\mathrm{max} - t_\mathrm{min})`\ , below which to exclude low-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_grid_min** to **filt_omega_grid_max**\ .  Defaults to 1.0.
 
    **filt_omega_grid_max** : float, optional
-      The multiple of the lowest frequency (:math:`\omega_\mathrm{grid} = \frac{2\pi\}{t_\mathrm{max} - t_\mathrm{min}}`\ ) below which to begin filtering out low-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_grid_min** to **filt_omega_grid_max**\ .  Defaults to 10.0.
+      The multiple of the lowest frequency, :math:`\omega_\mathrm{grid} = 2\pi/(t_\mathrm{max} - t_\mathrm{min})`\ , below which to begin filtering out low-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_grid_min** to **filt_omega_grid_max**\ .  Defaults to 10.0.
 
    **nz_filt_t** : int, optional
       Apply the temporal filters every **nz_filt_t** steps in :math:`z`\ .  Filtering can be too aggressive when done at every :math:`z` step.  Defaults to 2.
