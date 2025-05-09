@@ -37,7 +37,7 @@ Available parameters: **experiment**\ , **run**
 
 The grid section determines the speed of the moving frame, as well as the number of points in :math:`t`\ , :math:`z`\ , and :math:`r`\ .
 
-Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **xmin**\ , **xmax**\ , **nx**\ , **ell**\ =\ *0*
+Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **rmax**\ , **nr**\ , **zmin**\ , **zmax**\ , **nz**\ , **ell**\ =\ *0*
 
    **vf** : float, optional
       The speed of the moving frame (in units of the speed of light).  If this parameter is left blank (recommended), the moving frame will be set to move at the group velocity of the wavelength specified by **lambda0** in the given medium.  This is ideal for stability, and the calculated value of **vf** can later be retrieved from the output data.
@@ -46,22 +46,28 @@ Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ 
       The wavelength (m) that specifies the default frequency for calculation of the moving-frame velocity and for filtering.  This should ideally be set to the main frequency of the laser light.
 
    **tmin** : float
-      The minimum time (s) used for the time grid.
+      The minimum time (s) used for the :math:`t` grid.
 
    **tmax** : float
-      The maximum time (s) used for the time grid.
+      The maximum time (s) used for the :math:`t` grid.
 
    **nt** : int
       The number of points used for the time grid.  Since many FFTs will be taken in this dimension, the algorithm will be fastest if this is a power of 2.  Otherwise, a number of the form :math:`2^a 3^b 5^c 7^d 11^e 13^f`\ , where :math:`e+f` is either 0 or 1, will also be `reasonably efficient <https://www.fftw.org/fftw2_doc/fftw_3.html>`_\ .
 
-   **xmin** : floats [zmin, rmin]
-      The minimum spatial coordinates (m) in :math:`z` and :math:`r`\ , respectively.  The value of **rmin** should be set to 0.
+   **rmax** : float
+      The maximum radial coordinate (m) used for the :math:`r` grid.
 
-   **xmax** : floats [zmax, rmax]
-      The maximum spatial coordinates (m) in :math:`z` and :math:`r`\ , respectively.
+   **nr** : int
+      The number of points used for the radial grid.
 
-   **nx** : ints [nz, nr]
-      The number of points used in :math:`z` and :math:`r`\ , respectively.
+   **zmin** : float
+      The initial, minimum longitudinal coordinate (m) used for stepping in :math:`z`.
+
+   **zmax** : float
+      The final, maximum longitudinal coordinate (m) used for stepping in :math:`z`.
+
+   **nz** : int
+      The number of points used for stepping in :math:`z`.
 
    **ell** : int, default: 0
       The azimuthal index :math:`\ell` of the simulation, which can take on values of either 0 or 1.  If set to 0, the simulation corresponds to a cylindrically symmetric pulse.  If set to 1, a laser pulse initialized like a Laguerre--Gaussian mode with :math:`\ell = 1` will propagate properly.  Setting **ell** to 1, however, is an experimental mode, and most types of laser pulses will not work well.
@@ -91,7 +97,7 @@ Available parameters: **atomdensity**\ =\ *None*\ , **atom**\ , **nu_ei**\ =\ *1
 
 The laser section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
-Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size**\ , **filt_r_size**\ , **filt_omega_size**\ , **filt_k_size**\ , **filt_angle**\ , **delta_filt_angle**\ =\ *0*\ , **filt_omega_grid**\ , **vmap**\ =\ *True*\ , **pulses**
+Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_left**\ =\ *0.1*\ , **filt_t_size_right**\ =\ *0.1*\ , **filt_r_size**\ =\ *0.1*\ , **filt_omega_high_min**\ =\ *0.9*\ , **filt_omega_high_max**\ =\ *1.0*\ , **filt_k_high_min**\ =\ *0.9*\ , **filt_k_high_max**\ =\ *1.0*\ , **filt_angle_min**\ =\ *θ_max*\ , **filt_angle_max**\ =\ *θ_max + 10*\ , **filt_omega_grid_min**\ =\ *1.0*\ , **filt_omega_grid_max**\ =\ *10.0*\ , **nz_filt_t**\ =\ *2*\ , **nz_filt_omega**\ =\ *2*\ , **solver**\ =\ *"direct"*\ , **vmap**\ =\ *True*\ , **pulses**
 
    **bound_nonlinearity** : bool
       Whether or not propagation includes the nonlinear response from bound electrons, i.e., the optical Kerr effect.  This term often leads to self-focusing of an intense laser pulse.  For more information, see Section 2.4.1 of the practitioner's guide.\ [1]_
@@ -99,26 +105,47 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size*
    **ionization** : bool
       Whether or not propagation includes ionization of the gas (just the first level).  This term often leads to defocusing of an intense laser pulse in an ionization front.  For more information, see Section 2.4.4 of the practitioner's guide.\ [1]_
 
-   **filt_t_size** : float
-      The fraction of the total :math:`t` grid over which to taper the response to zero (using a cosine function) at the left and right edges.  For example, a value of 0.05 (recommended) will leave the middle 90% of the temporal grid untouched, but taper 5% on the left and 5% on the right to zero.
+   **filt_t_size_left** : float, optional
+      The fraction of the total :math:`t` grid over which to taper the response to zero (using a cosine function) at the left edge.  For example, a value of 0.1 for **filt_t_size_left** and **filt_t_size_right** will leave the middle 80% of the temporal grid untouched, but taper 10% on the left and 10% on the right to zero.  Defaults to 0.1.
 
-   **filt_r_size** : float
-      The fraction of the total :math:`r` grid over which to taper the response to zero (using a cosine function) at the top edge.  For example, a value of 0.1 (recommended) will leave the central 90% of the radial grid untouched, but taper 10% on the top to zero.
+   **filt_t_size_right** : float, optional
+      The same as **filt_t_size_left**\ , but for the right edge of the temporal domain.
 
-   **filt_omega_size** : float
-      The fraction of the positive :math:`\omega` grid to zero out at the right, high-frequency edge.  All negative frequencies are set to zero at each iteration automatically.  The **filt_omega_size** parameter allows for certain large, positive frequencies to be zeroed out as well.  For example, a value of 0.1 will leave frequencies from 0 to 90% of the Nyquist frequency untouched, but zero out frequencies above 90% of the Nyquist frequency.
+   **filt_r_size** : float, optional
+      The fraction of the total :math:`r` grid over which to taper the response to zero (using a cosine function) at the top edge.  For example, a value of 0.1 (recommended) will leave the central 90% of the radial grid untouched, but taper 10% on the top to zero.  Defaults to 0.1.
 
-   **filt_k_size** : float
-      The fraction of the positive :math:`k` grid to zero out at the high-\ :math:`k` edge (note that :math:`k` really refers to the perpendicular wavenumber, :math:`k_\perp`\ ).  For example, a value of 0.1 will leave :math:`k` from 0 to 90% of the maximum :math:`k` untouched, but zero out :math:`k` values above 90% of the maximum :math:`k`\ .
+   **filt_omega_high_min** : float, optional
+      The multiple of the Nyquist frequency (:math:`\omega_\mathrm{Ny} = \frac{\pi\}{\Delta t}`\ ) at which to begin filtering out high-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_high_min** to **filt_omega_high_max**\ .  Defaults to 0.9.
 
-   **filt_angle** : float
-      Waves with angle larger than **filt_angle** (in degrees) from the :math:`z`\ -axis are zeroed out during propagation.  The angle is determined in :math:`k`\ -space.
+   **filt_omega_high_max** : float, optional
+      The multiple of the Nyquist frequency (:math:`\omega_\mathrm{Ny} = \frac{\pi\}{\Delta t}`\ ) above which to exclude high-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_high_min** to **filt_omega_high_max**\ .  Defaults to 1.0.
 
-   **delta_filt_angle** : float
-      This implements a smooth filter in angle from **filt_angle** degrees to **filt_angle** minus **delta_filt_angle** degrees.  Defaults to 0.
+   **filt_k_high_min** : float, optional
+      The multiple of the Nyquist wavenumber at which to begin filtering out high-wavenumber content.  A smooth :math:`\cos^2` filter is applied from **filt_k_high_min** to **filt_k_high_max**\ .  Defaults to 0.9.
 
-   **filt_omega_grid** : float
-      Frequencies below :math:`\omega_\mathrm{grid} *`\ **filt_omega_grid** are zeroed out, where :math:`\omega_\mathrm{grid} = 2\pi / T` and :math:`T` is the full time interval of the :math:`t` grid.  I.e., :math:`\omega_\mathrm{grid}` is the lowest frequency that can fit on the grid, and **filt_omega_grid** can be set to something like 2 in order to filter out anything below twice that frequency.
+   **filt_k_high_max** : float, optional
+      The multiple of the Nyquist wavenumber above which to exclude high-wavenumber content.  A smooth :math:`\cos^2` filter is applied from **filt_k_high_min** to **filt_k_high_max**\ .  Defaults to 1.0.
+
+   **filt_angle_min** : float, optional
+      The angle (degrees) from the :math:`z`\ -axis at which to begin filtering out spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to :math:`\tan^{-1}[(z_\mathrm{max} - z_\mathrm{min}) / r_\mathrm{max}]`, or the angle at which light originating from the axis at the first :math:`z` location will hit the radial boundary at the last :math:`z` location.
+
+   **filt_angle_max** : float, optional
+      The angle (degrees) from the :math:`z`\ -axis above which to exclude spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to **filt_angle_min** + 10.
+
+   **filt_omega_grid_min** : float, optional
+      The multiple of the lowest frequency (:math:`\omega_\mathrm{grid} = \frac{2\pi\}{t_\mathrm{max} - t_\mathrm{min}}`\ ) below which to exclude low-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_grid_min** to **filt_omega_grid_max**\ .  Defaults to 1.0.
+
+   **filt_omega_grid_max** : float, optional
+      The multiple of the lowest frequency (:math:`\omega_\mathrm{grid} = \frac{2\pi\}{t_\mathrm{max} - t_\mathrm{min}}`\ ) below which to begin filtering out low-frequency content.  A smooth :math:`\cos^2` filter is applied from **filt_omega_grid_min** to **filt_omega_grid_max**\ .  Defaults to 10.0.
+
+   **nz_filt_t** : int, optional
+      Apply the temporal filters every **nz_filt_t** steps in :math:`z`\ .  Filtering can be too aggressive when done at every :math:`z` step.  Defaults to 2.
+
+   **nz_filt_omega** : int, optional
+      Apply the spectral filters every **nz_filt_omega** steps in :math:`z`\ .  Filtering can be too aggressive when done at every :math:`z` step.  Defaults to 2.
+
+   **solver** : str, optional
+      Which solver to use for solving the UPPE.  The options include *"direct"* and *"rk4"*\ .  The *"direct"* solver employs an RK2-like method similar to Heun's method.  The *"rk4"* solver uses the standard RK4 solver, which can be ~67% more time intensive than the *"direct"* solver.  Defaults to *"direct"*\ .
 
    **vmap** : bool, default: True
       Whether to use a `vmap <https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html>`_ (True) or a `lax loop <https://docs.jax.dev/en/latest/_autosummary/jax.lax.map.html>`_ (False) when computing the fresnel integral at the lens in the near field.  Using a vmap is typically much faster, but it can consume more memory than a lax loop.
@@ -182,6 +209,7 @@ Available parameters: **lambda0**\ , **I0**\ =\ *None*\ , **ene**\ =\ *None*\ , 
    **phase** : float
       Phase constant (degrees) added to the field profile.
 
+.. _ideal flying focus pulse:
 
 Ideal flying-focus pulse
 ************************
@@ -215,30 +243,9 @@ Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow*
 Axiparabola--echelon flying-focus pulse
 ***************************************
 
-The axiparabola--echelon flying-focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
+The axiparabola--echelon flying-focus pulse is selected by setting **type** to "axi-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axiparabola and an echelon.\ [3]_   In addition to all the parameters available for both a `standard pulse`_ and an `ideal flying focus pulse`_\ , the parameters below are also available.
 
-Available parameters: **vI**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*, **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*, **Rmin_pow**\ =\ *rpow*
-
-   **vI** : float
-      The speed of the focus (in units of the speed of light).
-
-   **f0** : float
-      Nominal focal length (m) of the focusing optic.
-
-   **nr_lens** : int
-      Number of grid points in the lens plane.
-
-   **rmaxf_lens** : float
-      Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
-
-   **rpow** : float, optional
-      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp[-(r_\mathrm{lens}/w_0)^{r_\mathrm{pow}}]`\ .  The value of **rpow** defaults to 2.
-
-   **rpow_2** : float, optional
-      A second power to also multiply in to the field at the lens, similar to what is done for **rpow**\ .  The value of **rpow_2** defaults to *None* and has no effect.  This parameter could be useful, for example, to simulate a Gaussian pulse profile incident on a lens with a hard radial cutoff.  In that case, the parameters **rpow** = 2 and **rpow_2** = 40 could be used.
-
-   **w0_2** : float, optional
-      The spot size in the exponential applied with the **rpow_2** parameter.  Must be specified if **rpow_2** is specified.
+Available parameters: **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlambfact**\ , **nr_sag**, **Rmin**\ =\ *None*, **Rmin_pow**\ =\ *rpow*
 
    **echelon** : bool
       Whether or not to apply the echelon.
