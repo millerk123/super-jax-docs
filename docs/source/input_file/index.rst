@@ -7,11 +7,12 @@ Input files for SUPER-JAX are written as yaml files.  Here we will go over the s
    :maxdepth: 1
    :caption: Sections
 
-   `mlflow` (optional) <input_file/mlflow>
+   mlflow
    grid
    medium
    laser
    save
+   exp
 
 .. note::
 

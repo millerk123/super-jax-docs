@@ -1,7 +1,7 @@
-``save``
-========
+save
+====
 
-The save section determines the data that is saved and plotted.
+The ``save`` section determines the data that is saved and plotted.
 
 Available parameters: **lineskip**\ , **fullskip**\ , **directory**\ , **display**\ =\ *1*\ , **plot_steps**\ =\ *False*\ , **display**\ =\ *True*\ , **dpi**\ =\ *300*\ , **save_sol**\ =\ *True*\ , **envelope**\ =\ *False*\ , **disable_output**\ =\ *False*\ , **upload**\ =\ *False*
 

@@ -1,7 +1,7 @@
-``mlflow``
-==========
+mlflow (optional)
+=================
 
-If this section is present, then the output will be saved into a folder called ``mlruns``, and the data will have to be accessed using something like the ``mlflow ui`` command.  If you wish to avoid using MLflow, simply omit this section.
+If the ``mlflow`` section is present, then the output will be saved into a folder called ``mlruns``, and the data will have to be accessed using something like the ``mlflow ui`` command.  If you wish to avoid using MLflow, simply omit this section.
 
 .. note::
 

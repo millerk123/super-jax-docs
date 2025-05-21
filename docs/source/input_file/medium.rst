@@ -1,7 +1,7 @@
-``medium``
-==========
+medium
+======
 
-The medium section specifies the gas that any radiation will propagate through.
+The ``medium`` section specifies the gas that any radiation will propagate through.
 
 Available parameters: **atomdensity**\ =\ *None*\ , **atom**\ , **nu_ei**\ =\ *1.0e13*
 

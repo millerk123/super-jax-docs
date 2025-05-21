@@ -1,7 +1,7 @@
-``laser``
-=========
+laser
+=====
 
-The laser section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
+The ``laser`` section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
 Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_left**\ =\ *0.1*\ , **filt_t_size_right**\ =\ *0.1*\ , **filt_r_size**\ =\ *0.1*\ , **filt_omega_high_min**\ =\ *0.9*\ , **filt_omega_high_max**\ =\ *1.0*\ , **filt_k_high_min**\ =\ *0.9*\ , **filt_k_high_max**\ =\ *1.0*\ , **filt_angle_min**\ =\ *θ_max*\ , **filt_angle_max**\ =\ *θ_max + 10*\ , **filt_omega_grid_min**\ =\ *1.0*\ , **filt_omega_grid_max**\ =\ *10.0*\ , **nz_filt_t**\ =\ *2*\ , **nz_filt_omega**\ =\ *2*\ , **solver**\ =\ *"direct"*\ , **vmap**\ =\ *True*\ , **pulses**
 

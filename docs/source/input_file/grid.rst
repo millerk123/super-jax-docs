@@ -1,7 +1,7 @@
-``grid``
-========
+grid
+====
 
-The grid section determines the speed of the moving frame, as well as the number of points in :math:`t`\ , :math:`z`\ , and :math:`r`\ .
+The ``grid`` section determines the speed of the moving frame, as well as the number of points in :math:`t`\ , :math:`z`\ , and :math:`r`\ .
 
 Available parameters: **vf**\ =\ *None*\ , **lambda0**\ , **tmin**\ , **tmax**\ , **nt**\ , **rmax**\ , **nr**\ , **zmin**\ , **zmax**\ , **nz**\ , **ell**\ =\ *0*
 
