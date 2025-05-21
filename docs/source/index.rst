@@ -26,7 +26,7 @@ Contents
    :maxdepth: 2
 
    usage
-   input_file
+   input_file/index
    sample-analysis-link.ipynb
    api
 
