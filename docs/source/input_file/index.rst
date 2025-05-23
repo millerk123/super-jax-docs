@@ -13,6 +13,7 @@ Input files for SUPER-JAX are written as yaml files.  Here we will go over the s
    laser
    save
    exp
+   post_exp
 
 .. note::
 
