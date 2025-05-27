@@ -245,7 +245,48 @@ Available parameters: **file**\ =\ *None*\ , **shape1**\ =\ *None*\ , **shape2**
 Custom pulse
 ************
 
-The custom pulse is for use only when doing machine-learned optimization problems.  It allows for the user to completely specify the function (often related to one of the other pulse initialization methods) to use for initializing the laser pulse.
+The custom pulse is for use only when doing machine-learned optimization problems.  It allows for the user to completely specify the function (often related to one of the other pulse initialization methods) to use for initializing the laser pulse.  Although this offers the user complete freedom, the function ``init_E_with_coefs`` is often used, and is defined in ``helpers.py``.  This function utilizes the below pulse parameters.
+
+Standard available parameters: **lambda0**\ , **tcent**\ , **tpulse**\ , **tpow**\ , **wf**\ , **zf**\ , **phase**\ , **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*
+
+   **lambda0** : float
+      The wavelength (m) of the pulse.
+
+   **tcent** : float
+      Temporal center of the pulse (s).  This value should normally be within the limits of **tmin** and **tmax** from the `grid`_ section.
+
+   **tpulse** : float
+      Pulse duration (s).  The field profile is proportional to :math:`\exp\{-[(t-t_\mathrm{cent})/t_\mathrm{pulse}]^{t_\mathrm{pow}}\}`\ .  Therefore, when **tpow** is 2 then the full width at half maximum of the intensity is :math:`\mathrm{FWHM} = \sqrt{2\ln 2} t_\mathrm{pulse}`\ .
+
+   **tpow** : float
+      Power for the temporal profile of the field, which is proportional to :math:`\exp\{-[(t-t_\mathrm{cent})/t_\mathrm{pulse}]^{t_\mathrm{pow}}\}`\ .
+
+   **wf** : float
+      Spot size at focus (m).  The field profile is proportional to :math:`\exp[-(r/w_\mathrm{f})^2]` at the focus.
+
+   **zf** : float
+      The focal position (m) in :math:`z`\ .
+
+   **phase** : float
+      Phase constant (degrees) added to the field profile.
+
+   **f0** : float
+      Nominal focal length (m) of the focusing optic.
+
+   **nr_lens** : int
+      Number of grid points in the lens plane.
+
+   **rmaxf_lens** : float
+      Factor (that multiplies ``w0`` of the pulse at the lens plane) to determine ``rmax`` of the lens, i.e., ``rmax_lens = rmaxf_lens * w0``.
+
+   **rpow** : float, optional
+      Power for the radial profile of the field at the lens, which is proportional to :math:`\exp[-(r_\mathrm{lens}/w_0)^{r_\mathrm{pow}}]`\ .  The value of **rpow** defaults to 2.
+
+   **rpow_2** : float, optional
+      A second power to also multiply in to the field at the lens, similar to what is done for **rpow**\ .  The value of **rpow_2** defaults to *None* and has no effect.  This parameter could be useful, for example, to simulate a Gaussian pulse profile incident on a lens with a hard radial cutoff.  In that case, the parameters **rpow** = 2 and **rpow_2** = 40 could be used.
+
+   **w0_2** : float, optional
+      The spot size in the exponential applied with the **rpow_2** parameter.  Must be specified if **rpow_2** is specified.
 
 
 
