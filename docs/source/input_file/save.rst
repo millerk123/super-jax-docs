@@ -3,7 +3,7 @@ save
 
 The ``save`` section determines the data that is saved and plotted.
 
-Available parameters: **lineskip**\ , **fullskip**\ , **directory**\ , **display**\ =\ *1*\ , **plot_steps**\ =\ *False*\ , **display**\ =\ *True*\ , **dpi**\ =\ *300*\ , **save_sol**\ =\ *True*\ , **envelope**\ =\ *False*\ , **disable_output**\ =\ *False*\ , **upload**\ =\ *False*
+Available parameters: **lineskip**\ , **fullskip**\ , **directory**\ , **n_loops**\ =\ *1*\ , **plot_steps**\ =\ *False*\ , **display**\ =\ *True*\ , **fluence_rmax**\ =\ *None*\ , **dpi**\ =\ *300*\ , **save_sol**\ =\ *True*\ , **envelope**\ =\ *False*\ , **disable_output**\ =\ *False*\ , **upload**\ =\ *False*\ , **coarsen_r**\ =\ *None*\ , **coarsen_t**\ =\ *None*
 
    **lineskip** : int
       The number of :math:`z` points to skip when writing lineout quantities (see diagnostics for more information).
@@ -23,6 +23,9 @@ Available parameters: **lineskip**\ , **fullskip**\ , **directory**\ , **display
    **display** : bool, optional
       Whether to display (True) or close (False) any plots made after the simulation finishes.  Defaults to True.
 
+   **fluence_rmax** : float, optional
+      If specified, sets the rmax ylim for the fluence plot.
+
    **dpi** : int, optional
       The dpi used for saving figures.  Defaults to 300.
 
@@ -37,3 +40,9 @@ Available parameters: **lineskip**\ , **fullskip**\ , **directory**\ , **display
 
    **upload** : bool, optional
       Upload the data to a remote MLflow server.  Defaults to False.
+
+   **coarsen_r** : bool, optional
+      Factor by which to coarsen the data in the radial dimension when plotting.  The data size must be a multiple of **coarsen_r**.
+
+   **coarsen_t** : bool, optional
+      Factor by which to coarsen the data in the temporal (and spectral) dimension when plotting.  The data size must be a multiple of **coarsen_t**, and **coarsen_t** must be even so that half of its value can be applied to the omega array.

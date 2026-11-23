@@ -42,3 +42,16 @@ The most standard way to run SUPER-JAX is to perform a single simulation based o
    python run.py "path/to/input_file.yaml"
 
 If no argument is supplied to the ``python run.py`` command, then the default file used is ``"configs/default.yaml"``.  A simulation will be performed based on the parameters in the input file, the output will be saved, and then the code will terminate.
+
+.. _optimization:
+
+ML usage with optimization
+--------------------------
+
+SUPER-JAX can also be run using machine learning to optimize a given physical process.  This is done by executing
+
+.. code-block:: console
+
+   python run_exp.py "path/to/exp_input_file.yaml"
+
+If no argument is supplied to the ``python run.py`` command, then the default file used is ``"configs/exp_ae_flying_focus.yaml"``.  A series of runs will be performed based on the parameters in the input file (including execution of a Python module defined by the **exp.module** parameter), and then the code will terminate.  The output can be analyzed using ``mlflow``\ .

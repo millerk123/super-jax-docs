@@ -3,6 +3,10 @@ laser
 
 The ``laser`` section sets the physics to include for laser pulse propagation, spatial and temporal filters to use on the domain (crucial for stability), and any number of laser pulses to inject.
 
+.. note::
+
+   If your program is running out of memory when trying to allocate a very large array in the ``fresnel_integral`` routine, try setting **vmap** to *False*\ .
+
 Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_left**\ =\ *0.1*\ , **filt_t_size_right**\ =\ *0.1*\ , **filt_r_size**\ =\ *0.1*\ , **filt_omega_high_min**\ =\ *0.9*\ , **filt_omega_high_max**\ =\ *1.0*\ , **filt_k_high_min**\ =\ *0.9*\ , **filt_k_high_max**\ =\ *1.0*\ , **filt_angle_min**\ =\ *θ_max*\ , **filt_angle_max**\ =\ *θ_max + 10*\ , **filt_omega_grid_min**\ =\ *1.0*\ , **filt_omega_grid_max**\ =\ *10.0*\ , **nz_filt_t**\ =\ *2*\ , **nz_filt_omega**\ =\ *2*\ , **solver**\ =\ *"direct"*\ , **vmap**\ =\ *True*\ , **pulses**
 
    **bound_nonlinearity** : bool
@@ -33,7 +37,7 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_
       The multiple of the Nyquist wavenumber above which to exclude high-wavenumber content.  A smooth :math:`\cos^2` filter is applied from **filt_k_high_min** to **filt_k_high_max**\ .  Defaults to 1.0.
 
    **filt_angle_min** : float, optional
-      The angle (degrees) from the :math:`z`\ -axis at which to begin filtering out spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to :math:`\theta_\mathrm{max} = \tan^{-1}[(z_\mathrm{max} - z_\mathrm{min}) / r_\mathrm{max}]`, or the angle at which light originating from the axis at the first :math:`z` location will hit the radial boundary at the last :math:`z` location.
+      The angle (degrees) from the :math:`z`\ -axis at which to begin filtering out spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to :math:`\theta_\mathrm{max} = \tan^{-1}[r_\mathrm{max} / (z_\mathrm{max} - z_\mathrm{min})]`, or the angle at which light originating from the axis at the first :math:`z` location will hit the radial boundary at the last :math:`z` location.
 
    **filt_angle_max** : float, optional
       The angle (degrees) from the :math:`z`\ -axis above which to exclude spectral content.  A smooth :math:`\cos^2` filter is applied from **filt_angle_min** to **filt_angle_max**\ .  Defaults to **filt_angle_min** + 10.
@@ -198,7 +202,7 @@ Sag pulse
 
 The sag pulse initializes a Gaussian pulse in the paraxial approximation at the lens plane, then uses the sag function corresponding to an ideal lens with focal length **f0** to focus the pulse into the far field.  In addition to all the parameters available for a `standard pulse`_\ , the parameters below are also available.
 
-Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*
+Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*, **rpow_2**\ =\ *None*, **w0_2**\ =\ *None*, **sag_rmax_lens**\ =\ *None
 
    **f0** : float
       Nominal focal length (m) of the focusing optic.
@@ -217,6 +221,9 @@ Available parameters: **f0**\ , **nr_lens**\ , **rmaxf_lens**, **rpow**\ =\ *2*,
 
    **w0_2** : float, optional
       The spot size in the exponential applied with the **rpow_2** parameter.  Must be specified if **rpow_2** is specified.
+
+   **sag_rmax_lens** : float, optional
+      The radius on the lens to consider as rmax for the Zernike polynomials in the sag function.  Defaults to **w0_2** if specified and otherwise the **w0** parameter computed (maximum lens radius divided by **rmaxf_lens**).
 
 
 Plasma lens pulse

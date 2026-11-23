@@ -1,7 +1,7 @@
 exp (optional)
 ==============
 
-The ``exp`` section is used when performing machine learning with SUPER-JAX, referred to as the experiment mode.  This section is used to specify parameters for the `OptaxSolver <https://jaxopt.github.io/stable/_autosummary/jaxopt.OptaxSolver.html>`_ (a part of `JAXopt <https://jaxopt.github.io/stable/index.html>`_ that extends `Optax <https://optax.readthedocs.io/en/latest/index.html>`_\ ), pulse initialization in experiments, parameters relating to the loss function, and the parameters to be optimized (lens shape, pulse characteristics, etc.).  This section is a bit fluid, and users could easily add parameters as they see fit.
+The ``exp`` section is used when performing machine learning with SUPER-JAX, referred to as the experiment mode.  See :ref:`optimization` for more info on how to run an experiment.  The ``exp`` section of the input deck is used to specify parameters for the `OptaxSolver <https://jaxopt.github.io/stable/_autosummary/jaxopt.OptaxSolver.html>`_ (a part of `JAXopt <https://jaxopt.github.io/stable/index.html>`_ that extends `Optax <https://optax.readthedocs.io/en/latest/index.html>`_\ ), pulse initialization in experiments, parameters relating to the loss function, and the parameters to be optimized (lens shape, pulse characteristics, etc.).  This section is a bit fluid, and users could easily add parameters as they see fit.
 
 .. note::
 
@@ -23,16 +23,43 @@ Standard available parameters
 
 Based on the current structure of the optimization algorithm, these are standard parameters that can be used for all types of experimental runs.
 
-Available parameters: **adjoint**\ , **learning_rate**\ , **n_opt**\ , **save_x**\ , **upload**\ , **bandwidth**\ , **filt_t_size_init**\ , **filt_r_size_init**\ , **ene**\ , **nr_coefs**\ , **window_len**\ , **lens_variation**\ , **init_lens_coefs**\ , **scale_high_zernikes**\ , **scale_lens_free**\ , **window_len_free**\ , **pulse_variation**\ , **optics**\ , **scale_echelon**
+Available parameters: **module**\ , **adjoint**\ , **optimizer**\ , **learning_rate**\ , **learning_scheduler**\ , **decay_steps**\ , **alpha**\ , **n_opt**\ , **save_x**\ , **upload**\ , **bandwidth**\ , **clipping_bandwidth**\ , **filt_t_size_init**\ , **filt_r_size_init**\ , **ene**\ , **nr_coefs**\ , **window_len**\ , **lens_variation**\ , **init_lens_coefs**\ , **scale_high_zernikes**\ , **scale_lens_free**\ , **window_len_free**\ , **pulse_variation**\ , **optics**\ , **scale_echelon**\ , **add_lens_coefs**
+
+   **module** : str
+      Path to the Python module to execute for the given experiment.
 
    **adjoint** : str
       Adjoint method for the diffrax solver, either *"recursive"* (recommended, faster, uses more memory) or *"backsolve"* (slower, uses less memory).
 
+   **optimizer** : str
+      The library to use for optimizing the function.  The current allowed options are *"optax"* and *"scipy"*\ .  If using the Optax solver, the **learning_rate** parameter must also be set.
+
    **learning_rate** : float
-      The learning rate to use with the Optax `Adam <https://optax.readthedocs.io/en/latest/api/optimizers.html#optax.adam>`_ optimizer (or whichever optimizer the user implements).  The optimizers work best if the loss function output is of order unity, and **learning_rate** is of order :math:`10^{-4}`\ --\ :math:`10^{-2}`\ .
+      The learning rate to use with the Optax `Adam <https://optax.readthedocs.io/en/latest/api/optimizers.html#optax.adam>`_ optimizer (or whichever optimizer the user implements).  The optimizers work best if the loss function output is of order unity, and **learning_rate** is of order :math:`10^{-4}`\ --\ :math:`10^{-2}`\ .  If a learning scheduler is used, **learning_rate** is taken as the peak value learning rate.
+
+   **learning_scheduler** : str, optional
+      String specifying the learning scheduler to use with the Optax solver.  Acceptable values are *"warmup_constant"*, *"cosine_decay"*, or *"warmup_cosine_decay"*\ . The default is *None*, for which no learning scheduler is used.
+
+   **init_value** : float, optional
+      Initial value for the warmup learning rate.
+
+   **warmup_steps** : int, optional
+      The length of the linear warmup.
+
+   **decay_steps** : int, optional
+      Positive integer indicating the number of steps over which to apply the learning rate decay for the Optax solver.  The **learning_scheduler** must be specified to use this parameter.
+
+   **end_value** : float, optional
+      The minimum value of the learning rate for the Optax solver.  The **learning_scheduler** must be specified to use this parameter.
 
    **n_opt** : int
-      Number of simulations to conduct for the optimization.
+      Number of optimization iterations when using the Optax optimizer, or the maximum number of iterations when using the Scipy optimizer.
+
+   **ftol** : float, optional
+      The **ftol** argument for the Scipy minimizer.
+
+   **gtol** : float, optional
+      The **gtol** argument for the Scipy minimizer.
 
    **save_x** : bool
       Whether or not to save the lineout data, lens data, and other data that is plotted.  This parameter is related to the **save_sol** parameter in the :doc:`input_file/save` section of the input file.  If only **save_sol** is turned on, then the full-grid and lineout data will be saved.  If only **save_x** is turned on, then the lineout data along with extra experiment-specific data will be saved.  If both are turned on, then all data will be saved.
@@ -41,7 +68,7 @@ Available parameters: **adjoint**\ , **learning_rate**\ , **n_opt**\ , **save_x*
       Whether or not to upload the MLflow run to the server (hosted by Archis).
 
    **bandwidth** : float
-      Fraction of the pulse frequency that governs how much the central frequency and duration can vary.
+      Fraction of the pulse frequency that governs the plotting of the learned pulse.
 
    **filt_t_size_init** : float
       Similar to the **filt_t_size_left** and **filt_t_size_right** parameters from the :doc:`input_file/laser` section, but this parameter applies to both left and right sides, and is only used to filter the initial pulse.  This is done so that the user can specify a more stringent filter at initialization.
@@ -84,10 +111,15 @@ Available parameters: **adjoint**\ , **learning_rate**\ , **n_opt**\ , **save_x*
    **scale_echelon** : int
       Determines how quickly the echelon shape varies (as a multiple of :math:`\lambda_0`\ ).  A reasonable starting value might be 5.
 
+   **add_lens_coefs** : floats [[]]
+      A nested list of floats that specifies the coefficients of Zernike polynomials for different powers of frequency that should be added to the lens.  The length of the list determines how many powers of frequency are used.  The code is written to utilize Zernike polynomials of order 0, 2, 4, and 6.  Since we use a positive and negative variation parameter for each order Zernike (as explained `above <#nuances>`_\ ), an item in the list should also be a list with values :math:`[A_0^+, A_0^-, A_2^+, A_2^-, A_4^+, A_4^-, A_6^+, A_6^-]`\ , where the subscript refers to the Zernike order and the superscript refers to whether the contribution is positive or negative.
+
+      This list could be useful for redoing a previously converged run, but allowing extra parameters to vary (e.g., amplitude, frequency, echelon, etc.) while still using the lens coefficients obtained from the previous run.
+
 Custom parameters
 -----------------
 
-In order to implement a custom experiment and optimization algorithm, the user will likely desire to specify a number of extra inputs in the input deck.  The convention is to specify these in the ``exp`` section of the input deck, then use them in the corresponding ``run_exp_*.py`` file for the given experiment.  Below, we list parameters that are used in the ``run_exp_axi_echelon.py`` experiment as an example of what a user could implement.
+In order to implement a custom experiment and optimization algorithm, the user will likely desire to specify a number of extra inputs in the input deck.  The convention is to specify these in the ``exp`` section of the input deck, then use them in the corresponding ``exp_*.py`` file for the given experiment (which is specified in the **exp.module** parameter of the input deck).  Below, we list parameters that are used in the experiment that uses ``exp_ae_flying_focus.yaml`` and ``exp_axi_echelon.py`` as an example of what a user could implement.
 
 Example parameters: **r_count**\ , **z_count**\ , **t_count**\ , **filename**\ , **vI**\ , **E0**\ , **FWHM**\ , **compare_data**
 
