@@ -6,3 +6,6 @@ build-backend = "flit_core.buildapi"
 name = "super-jax"
 authors = [{name = "Kyle", email = "kmill@lle.rochester.edu"}]
 dynamic = ["version", "description"]
+
+[tool.black]
+line-length = 120
