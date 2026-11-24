@@ -78,7 +78,7 @@ Available parameters: **bound_nonlinearity**\ , **ionization**\ , **filt_t_size_
       * *"standard"*\ : A Gaussian pulse in the paraxial approximation, initialized in the far field.
       * *"ideal flying focus"*\ : Ideal representation of the flying focus.\ [2]_
       * *"axi-echelon flying focus"*\ : Axiparabola--echelon (or "ultrafast") flying focus.\ [3]_
-      * *"axicon-echelon flying focus"*\ : Axicon--echelon flying focus.
+      * *"axilens-echelon flying focus"*\ : Axilens--echelon flying focus.
       * *"sag"*\ : A Gaussian pulse in the paraxial approximation that is initialized in the near field and then focused by an optic with a custom sag function.
       * *"plasma lens"*\ : Hacked-together way to import a pulse profile and focus it with a plasma lens (hey, at least I'm honest).
       * *"custom"*\ : Pulse initialization using a custom-defined function, only for use when doing machine-learned optimization.
@@ -186,15 +186,15 @@ Available parameters: **echelon**\ , **Rap** \, **Lap**\ , **lambdaD**\ , **nlam
    The **I0** (or **ene**\ ) parameter for this pulse refers to the maximum intensity (or energy) of the pulse at the start of the focal region.  If the **Rmin** parameter is used, this can drastically affect the intensity at the beginning of the focal region, so using **ene** in this case would be more reliable.
 
 
-Axicon--echelon flying-focus pulse
-**********************************
+Axilens--echelon flying-focus pulse
+***********************************
 
-The axicon--echelon flying-focus pulse is selected by setting **type** to "axicon-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axicon\ [4]_ and an echelon.  The difference between the axiparabola and axicon is in the expression for the focal length:
+The axilens--echelon flying-focus pulse is selected by setting **type** to "axilens-echelon flying focus".  This pulse creates a flying focus (with focal velocity in the neighborhood of the speed of light) using a combination of an axilens and an echelon.  Here the axilens is a generalized axiparabola with a hole in its center: the optic only occupies the annulus :math:`R_\mathrm{min} \le r \le R_\mathrm{ap}`, and its focal length is defined so that the inner edge of the annulus (rather than the center of the optic) focuses to the start of the focal region.\ [4]_  The difference between the axiparabola and axilens is in the expression for the focal length:
 
 * Axiparabola: :math:`f(r) = f_0 + L_\mathrm{ap} (r/R_\mathrm{ap})^2`.
-* Axicon: :math:`f(r) = f_0 + L_\mathrm{ap} (r^2 - R_\mathrm{min}^2) / (R_\mathrm{ap}^2 - R_\mathrm{min}^2)`.
+* Axilens: :math:`f(r) = f_0 + L_\mathrm{ap} (r^2 - R_\mathrm{min}^2) / (R_\mathrm{ap}^2 - R_\mathrm{min}^2)`.
 
-All of the parameters for the axicon--echelon flying-focus pulse are the same as for the `axiparabola--echelon flying-focus pulse`_\ , except that the **Rmin** parameter is required.
+For :math:`R_\mathrm{min} = 0`, the axilens reduces to the axiparabola.  All of the parameters for the axilens--echelon flying-focus pulse are the same as for the `axiparabola--echelon flying-focus pulse`_\ , except that the **Rmin** parameter (the radius of the hole) is required.
 
 
 Sag pulse
